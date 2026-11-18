@@ -87,7 +87,7 @@ const groupedWorkEntries: AssistantEntry[] = [
   { work: false, refs: ["response:text:0"] },
 ]
 
-test("the current timeline projection follows the work steps accessor live", () => {
+test("both timeline projections follow the work steps accessor live", () => {
   createRoot((dispose) => {
     const [state, setState] = createStore<{ workSteps?: WorkSteps }>({ workSteps })
     const detail = timelinePresets.find((preset) => preset.id === "compact")!.value
@@ -100,13 +100,23 @@ test("the current timeline projection follows the work steps accessor live", () 
       workSteps: () => state.workSteps,
     })
 
+    const next = createNextTimelineProjection({
+      sessionMessages: () => workMessages,
+      status: () => ({ type: "idle" }),
+      timelineDetail: () => detail,
+      workSteps: () => state.workSteps,
+    })
+
     expect(assistantEntries(current.rows())).toEqual(groupedWorkEntries)
+    expect(assistantEntries(next.rows())).toEqual(groupedWorkEntries)
 
     setState("workSteps", undefined)
     expect(assistantEntries(current.rows())).toEqual(nativeWorkEntries)
+    expect(assistantEntries(next.rows())).toEqual(nativeWorkEntries)
 
     setState("workSteps", workSteps)
     expect(assistantEntries(current.rows())).toEqual(groupedWorkEntries)
+    expect(assistantEntries(next.rows())).toEqual(groupedWorkEntries)
     dispose()
   })
 })

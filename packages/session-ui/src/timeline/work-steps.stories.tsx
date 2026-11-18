@@ -14,7 +14,7 @@ export const Playground = {
     timeline: "current",
     view: "standard",
   },
-  render: (args: { timeline: "current"; view: WorkStepView }) => {
+  render: (args: { timeline: "current" | "next"; view: WorkStepView }) => {
     return (
       <section class="mx-auto w-full max-w-[760px] p-6">
         <WorkStepsFixture

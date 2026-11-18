@@ -215,13 +215,13 @@ export function createTimelineController(input: {
     pendingInputIDs,
     queuedCompactionIDs,
     turnDiffs: settings.general.showTurnDiffs,
+    workSteps,
   }
 
   const projection = input.next
     ? createNextTimelineProjection(projectionInput)
     : createTimelineProjection({
         ...projectionInput,
-        workSteps,
         reasoningMode,
         shellToolDefaultOpen: shellToolPartsExpanded,
         editToolDefaultOpen: editToolPartsExpanded,

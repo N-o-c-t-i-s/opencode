@@ -201,7 +201,7 @@ function MessageTimelineView(
     presentationKey: () =>
       `${props.next ? "next:" : ""}${JSON.stringify({
         timelineDetail: props.data.timelineDetail(),
-        workSteps: props.next ? undefined : props.data.workSteps(),
+        workSteps: props.data.workSteps(),
       })}`,
     keepsDisclosure: props.next,
     projection,

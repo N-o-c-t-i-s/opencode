@@ -17,6 +17,8 @@ import type { TimelineDetail } from "../src/timeline/detail"
 import { createReactiveTimelineProjection, type ReasoningMode } from "../src/timeline/projection"
 import { createSessionTimelineRowRenderer } from "../src/timeline/session-timeline-row"
 import type { WorkSteps } from "../src/timeline/work-steps"
+import { createNextTimelineProjection } from "../src/timeline-next/projection"
+import { createNextTimelineRowRenderer } from "../src/timeline-next/row"
 
 const sessionID = "session_work_steps_fixture"
 
@@ -143,7 +145,7 @@ let mounted:
   | undefined
 
 export function WorkStepsFixture(props: {
-  timeline: "current"
+  timeline: "current" | "next"
   workSteps: WorkSteps
   timelineDetail?: TimelineDetail
   reasoningMode?: ReasoningMode
@@ -177,7 +179,35 @@ export function WorkStepsFixture(props: {
     workSteps: () => props.workSteps,
   })
 
+  const nextProjection = createNextTimelineProjection({
+    sessionMessages: messages,
+    status,
+    timelineDetail,
+    workSteps: () => props.workSteps,
+  })
+
   const renderer = () => {
+    if (props.timeline === "next") {
+      const nextRenderer = createNextTimelineRowRenderer({
+        sessionID: () => sessionID,
+        status,
+        projection: nextProjection,
+        presentation: () => undefined,
+        timelineDetail,
+        workSteps: () => props.workSteps,
+        disclosure: {
+          value: (key) => disclosure[key],
+          set: (key, open) => setDisclosure(key, open),
+        },
+      })
+
+      return (
+        <For each={nextProjection.rows().filter((row) => !Predicate.isTagged(row, "UserMessage"))}>
+          {(row) => <nextRenderer.Row row={() => row} />}
+        </For>
+      )
+    }
+
     const currentRenderer = createSessionTimelineRowRenderer({
       sessionID: () => sessionID,
       status,

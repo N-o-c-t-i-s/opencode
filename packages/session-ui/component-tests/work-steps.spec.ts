@@ -7,7 +7,7 @@ const fixture = sourceURL(new URL("./work-steps.fixture.tsx", import.meta.url))
 async function mountFixture(
   page: Page,
   options: {
-    timeline: "current"
+    timeline: "current" | "next"
     view: "compact" | "standard" | "detailed" | "verbose"
     scenario?: "work" | "replies" | "native" | "shell-separate"
     nativeExpanded?: boolean
@@ -54,7 +54,7 @@ async function mountFixture(
   return page.getByTestId("work-steps-fixture")
 }
 
-for (const timeline of ["current"] as const) {
+for (const timeline of ["current", "next"] as const) {
   for (const view of ["standard", "compact"] as const) {
     story(`${timeline} ${view} keeps phases from one response independent`, async ({ mount, page }) => {
       await mount("current-session-timeline-rows--conversation", { args: { scenario: "reasoning" } })

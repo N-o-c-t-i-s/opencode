@@ -885,7 +885,7 @@ export const dict = {
     "A redesigned session timeline that groups what the agent did, with one status line below the turn",
   "settings.experimental.row.workSteps.title": "Work steps",
   "settings.experimental.row.workSteps.description":
-    "Apply to the classic timeline only. Keep agent activity open while it works, then fold it after the turn completes or new input arrives",
+    "Keep agent activity open while it works, then fold it after the turn completes or new input arrives",
   "settings.experimental.row.newQuestionUI.title": "New question UI",
   "settings.experimental.row.newQuestionUI.description": "Preview the keyboard-first question dock",
   "settings.experimental.row.tabGroups.title": "Tab groups",
